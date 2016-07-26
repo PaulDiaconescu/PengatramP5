@@ -31982,21 +31982,40 @@ module.exports = require('./lib/React');
 var React = require('react');
 var Router = require('react-router');
 var Link = Router.Link;
+var RegisterForm = require('./RegisterForm');
+var Input = require('./common/textInput');
+
+
+
 var LoginForm = React.createClass({displayName: "LoginForm",
 	render: function() {
+
+        var stylee = {
+            background: 'rgba(192,192,192,0.3)',
+            border: 'solid',
+            borderColor: 'rgba(204,204,204,0.2)'
+        };
+
+        var style1 = {
+                width: "280"
+        };
+        
         document.body.style.backgroundImage = "url('City.jpg')";
-        document.body.style.backgroundPosition = "center center";
+        document.body.style.backgroundPosition = "top center";
+        
         return (
+                React.createElement("div", {style: stylee}, 
                 React.createElement("form", null, 
-                        React.createElement("br", null), 
-                        React.createElement("center", null, React.createElement("h1", null, "Pentagram")), 
+                        
+                        React.createElement("center", null, React.createElement("img", {src: "pentagram.png", width: "280", height: "100"})), 
 
                         React.createElement("br", null), " ", React.createElement("br", null), 
                         React.createElement("label", {htmlFor: "Username"}, "Username:"), 
                         React.createElement("input", {type: "text", name: "Username", 
                         className: "form-control", 
-                        placeholder: "Username", 
-                        ref: "Username"}
+                        onChange: this.props.OnChange, 
+                        value: this.props.Username, 
+                        placeholder: "Username"}
                         ), 
                         React.createElement("br", null), 
 
@@ -32004,17 +32023,19 @@ var LoginForm = React.createClass({displayName: "LoginForm",
                         React.createElement("input", {type: "password", 
                         name: "Password", 
                         className: "form-control", 
-                        placeholder: "Password", 
-                        ref: "password"}
+                        onChange: this.props.OnChange, 
+                        value: this.props.Username, 
+                        placeholder: "Password"}
                         ), 
                         React.createElement("br", null), 
                         
-                        React.createElement("input", {type: "submit", value: "Login", className: "btn btn-default"}), 
+                        React.createElement("input", {type: "submit", value: "Login", className: "btn btn-default", style: style1}), 
 
 
                         React.createElement(Link, {to: "Register"}, 
-                        React.createElement("label", {htmlFor: "Register"}, "If you don't have an account register here")
+                        React.createElement("label", {htmlFor: "Register"}, "If you don't have an account register here.")
                         )
+                )
                 )
             
 		);
@@ -32023,57 +32044,77 @@ var LoginForm = React.createClass({displayName: "LoginForm",
 
 module.exports = LoginForm;
 
-},{"react":196,"react-router":27}],198:[function(require,module,exports){
+},{"./RegisterForm":198,"./common/textInput":202,"react":196,"react-router":27}],198:[function(require,module,exports){
 "use strict";
 
 var React = require('react');
 var Router = require('react-router');
 var Link = Router.Link;
+var Input = require('./common/textInput');
 
 var RegisterForm = React.createClass({displayName: "RegisterForm",
 	render: function() {
 
         document.body.style.backgroundImage = "url('City.jpg')";
-        document.body.style.backgroundPosition = "center center";
+        document.body.style.backgroundPosition = "top center";
+
+        var stylee = {
+            background: 'rgba(192,192,192,0.3)',
+            border: 'solid',
+            borderColor: 'rgba(204,204,204,0.2)'
+        };
+
+        var style1 = {
+                width: "280"
+        };
 
         return (
-			React.createElement("form", null, 
-                React.createElement("br", null), 
-                React.createElement("center", null, React.createElement("h1", null, "Register")), 
+                React.createElement("div", {style: stylee}, 
+		React.createElement("form", null, 
+                        React.createElement("br", null), 
+                        React.createElement("center", null, React.createElement("img", {src: "register.png", width: "280", height: "100"})), 
 
-                React.createElement("br", null), " ", React.createElement("br", null), 
-                React.createElement("label", {htmlFor: "Username"}, "Username:"), 
-                React.createElement("input", {type: "text", name: "Username", 
-                className: "form-control", 
-                placeholder: "Username", 
-                ref: "Username"}
-                ), 
-                React.createElement("br", null), 
+                        React.createElement("br", null), 
+                        React.createElement("label", {htmlFor: "Username"}, "Username:"), 
+                        React.createElement("input", {type: "text", name: "Username", 
+                        className: "form-control", 
+                        onChange: this.props.OnChange, 
+                        value: this.props.Username, 
+                        placeholder: "Username"}
+                        ), 
 
-                React.createElement("label", {htmlFor: "Password"}, "Password:"), 
-                React.createElement("input", {type: "password", 
-                       name: "Password", 
-                       className: "form-control", 
-                       placeholder: "Password", 
-                       ref: "password"}
-                       ), 
-                React.createElement("br", null), 
-                React.createElement("label", {htmlFor: "E-Mail"}, "E-Mail:"), 
-                React.createElement("input", {type: "text", 
-                       name: "E-Mail", 
-                       className: "form-control", 
-                       placeholder: "E-Mail", 
-                       ref: "E-Mail"}
-                       ), 
+                        React.createElement("label", {htmlFor: "Password"}, "Password:"), 
+                        React.createElement("input", {type: "password", 
+                        name: "Password", 
+                        className: "form-control", 
+                        onChange: this.props.OnChange, 
+                        value: this.props.Username, 
+                        placeholder: "Password"}
+                        ), 
+                        
+                        React.createElement("label", {htmlFor: "E-Mail"}, "E-Mail:"), 
+                        React.createElement("input", {type: "text", 
+                        name: "E-Mail", 
+                        className: "form-control", 
+                        onChange: this.props.OnChange, 
+                        value: this.props.Username, 
+                        placeholder: "E-Mail"}
+                        ), 
 
-                React.createElement("br", null), 
+                        React.createElement("br", null), 
 
-                React.createElement(Link, {to: "Login"}, 
-                    React.createElement("input", {type: "button", value: "Login", className: "btn btn-default"})
-                    )
+                        React.createElement(Link, {to: "Login"}, 
+                        React.createElement("input", {type: "button", value: "Register", className: "btn btn-default", width: "250", style: style1})
+                        ), 
 
-                
-            )
+                        React.createElement("br", null), 
+
+                        React.createElement(Link, {to: "Login"}, 
+                        React.createElement("label", {htmlFor: "Register"}, "Take me back to the login page.")
+                        )
+
+               )
+               )
 
 		);
 	}
@@ -32081,7 +32122,7 @@ var RegisterForm = React.createClass({displayName: "RegisterForm",
 
 module.exports = RegisterForm;
 
-},{"react":196,"react-router":27}],199:[function(require,module,exports){
+},{"./common/textInput":202,"react":196,"react-router":27}],199:[function(require,module,exports){
 "use strict";
 
 var React = require('react');
@@ -32160,12 +32201,69 @@ module.exports = Header;
 "use strict";
 
 var React = require('react');
+
+var Input = React.createClass({displayName: "Input",
+  propTypes: {
+    name: React.PropTypes.string.isRequired,
+    label: React.PropTypes.string.isRequired,
+    onChange: React.PropTypes.func.isRequired,
+    placeholder: React.PropTypes.string,
+    value: React.PropTypes.string,
+    error: React.PropTypes.string
+  },
+
+  render: function () {
+    var wrapperClass = 'form-group';
+    if (this.props.error && this.props.error.length > 0) {
+      wrapperClass += " " + 'has-error';
+    }
+    
+    return (
+     React.createElement("div", {className: wrapperClass}, 
+        React.createElement("label", {htmlFor: this.props.name}, this.props.label), 
+        React.createElement("div", {className: "field"}, 
+          React.createElement("input", {type: "text", 
+            name: this.props.name, 
+            className: "form-control", 
+            placeholder: this.props.placeholder, 
+            ref: this.props.name, 
+            value: this.props.value, 
+            onChange: this.props.onChange}), 
+          React.createElement("div", {className: "input"}, this.props.error)
+        )
+      )
+    );
+  }
+});
+
+module.exports = Input;
+
+},{"react":196}],203:[function(require,module,exports){
+"use strict";
+
+var React = require('react');
 var Router = require('react-router');
 var Link = Router.Link;
 var LoginForm = require('./LoginForm');
+var RegisterForm = require('./RegisterForm');
 
 
 var Login = React.createClass({displayName: "Login",
+
+    getInitialState: function() {
+       return {
+           user: { Username: '', Password: '', Email: ''}
+       };
+   },
+
+    setUserState: function (event){
+        var field = event.target.name;
+        var value = event.target.value;
+        this.state.user [field] = value;
+        return this.setState({ user: this.state.user});
+    },
+
+    
 	render: function() {
 		//noinspection JSDuplicatedDeclaration
         var styles = {
@@ -32179,7 +32277,9 @@ var Login = React.createClass({displayName: "Login",
 		return (
 
             React.createElement("center", null, 
+            
             React.createElement("div", {className: "Login Form", style: styles}, 
+
 
 				React.createElement(LoginForm, null)
 			)
@@ -32191,7 +32291,7 @@ var Login = React.createClass({displayName: "Login",
 
 
 module.exports = Login;
-},{"./LoginForm":197,"react":196,"react-router":27}],203:[function(require,module,exports){
+},{"./LoginForm":197,"./RegisterForm":198,"react":196,"react-router":27}],204:[function(require,module,exports){
 "use strict";
 
 var React = require('react');
@@ -32211,25 +32311,41 @@ var NotFoundPage = React.createClass({displayName: "NotFoundPage",
 
 module.exports = NotFoundPage;
 
-},{"react":196,"react-router":27}],204:[function(require,module,exports){
+},{"react":196,"react-router":27}],205:[function(require,module,exports){
 "use strict";
 
 var React = require('react');
 var Router = require('react-router');
 var Link = Router.Link;
+var LoginForm = require('./LoginForm');
 var RegisterForm = require('./RegisterForm');
 
 
 var Register = React.createClass({displayName: "Register",
+    getInitialState: function() {
+       return {
+           user: { Username: '', Password: '', Email: ''}
+       };
+   },
+
+   setUserState: function(event) {
+        var field = event.target.name;
+        var value = event.target.value;
+        this.state.user [field] = value;
+        return this.setState({ user: this.state.user});
+    },
+
 	render: function() {
 		//noinspection JSDuplicatedDeclaration
         var styles = {
-        backgroundImage: "none",
-		fontSize: 15,
-        width: "290px",
-        height: "330px",
-        color: "#ffffff"
+            backgroundImage: "none",
+            fontSize: 15,
+            width: "290px",
+            height: "330px",
+            color: "#ffffff"
         };
+
+
 
 		return (
 
@@ -32246,7 +32362,7 @@ var Register = React.createClass({displayName: "Register",
 
 
 module.exports = Register;
-},{"./RegisterForm":198,"react":196,"react-router":27}],205:[function(require,module,exports){
+},{"./LoginForm":197,"./RegisterForm":198,"react":196,"react-router":27}],206:[function(require,module,exports){
 "use strict";
 
 var React = require('react');
@@ -32256,7 +32372,7 @@ var routes = require('./routes');
 Router.run(routes, function(Handler) {
 	React.render(React.createElement(Handler, null), document.getElementById('app'));
 });
-},{"./routes":206,"react":196,"react-router":27}],206:[function(require,module,exports){
+},{"./routes":207,"react":196,"react-router":27}],207:[function(require,module,exports){
 "use strict";
 
 var React = require('react');
@@ -32282,4 +32398,4 @@ var routes = (
 
 module.exports = routes;
 
-},{"./components/about/aboutPage":199,"./components/app":200,"./components/loginPage":202,"./components/notFoundPage":203,"./components/registerpage":204,"react":196,"react-router":27}]},{},[205]);
+},{"./components/about/aboutPage":199,"./components/app":200,"./components/loginPage":203,"./components/notFoundPage":204,"./components/registerpage":205,"react":196,"react-router":27}]},{},[206]);

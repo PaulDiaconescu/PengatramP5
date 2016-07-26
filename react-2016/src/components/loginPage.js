@@ -4,9 +4,25 @@ var React = require('react');
 var Router = require('react-router');
 var Link = Router.Link;
 var LoginForm = require('./LoginForm');
+var RegisterForm = require('./RegisterForm');
 
 
 var Login = React.createClass({
+
+    getInitialState: function() {
+       return {
+           user: { Username: '', Password: '', Email: ''}
+       };
+   },
+
+    setUserState: function (event){
+        var field = event.target.name;
+        var value = event.target.value;
+        this.state.user [field] = value;
+        return this.setState({ user: this.state.user});
+    },
+
+    
 	render: function() {
 		//noinspection JSDuplicatedDeclaration
         var styles = {
@@ -20,7 +36,9 @@ var Login = React.createClass({
 		return (
 
             <center>
+            
             <div className="Login Form" style={styles}>
+
 
 				<LoginForm />
 			</div>
