@@ -34,9 +34,10 @@ var LoginForm = React.createClass({
                         <label htmlFor="Username">Username:</label>
                         <input type="text" name="Username"
                         className="form-control"
-                        onChange={this.props.OnChange}
-                        value = {this.props.Username}
+                        //onChange={this.props.OnChange}
+                        //value = {this.props.Username}
                         placeholder="Username"
+                        onChange={this.userChangeHandler}
                         />
                         <br />
 
@@ -44,13 +45,15 @@ var LoginForm = React.createClass({
                         <input type="password"
                         name="Password"
                         className="form-control"
-                        onChange={this.props.OnChange}
-                        value = {this.props.Username}
+                        //onChange={this.props.OnChange}
+                        //value = {this.props.Username}
                         placeholder="Password"
+                        onChange={this.passwordChangeHandler}
+
                         />
                         <br />
                         
-                        <input type="submit" value="Login" className="btn btn-default" style={style1}/>
+                        <input type="submit" value="Login" className="btn btn-default" style={style1} onClick={this.formSubmitHandler}/>
 
 
                         <Link to = "Register">

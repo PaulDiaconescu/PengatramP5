@@ -32078,8 +32078,8 @@ var RegisterForm = React.createClass({displayName: "RegisterForm",
                         React.createElement("label", {htmlFor: "Username"}, "Username:"), 
                         React.createElement("input", {type: "text", name: "Username", 
                         className: "form-control", 
-                        onChange: this.props.OnChange, 
-                        value: this.props.Username, 
+                        onChange: this.userChangeHandler, 
+                        //value = {this.props.Username}
                         placeholder: "Username"}
                         ), 
 
@@ -32087,8 +32087,8 @@ var RegisterForm = React.createClass({displayName: "RegisterForm",
                         React.createElement("input", {type: "password", 
                         name: "Password", 
                         className: "form-control", 
-                        onChange: this.props.OnChange, 
-                        value: this.props.Username, 
+                        onChange: this.passwordChangeHandler, 
+                        //value = {this.props.Username}
                         placeholder: "Password"}
                         ), 
                         
@@ -32096,15 +32096,15 @@ var RegisterForm = React.createClass({displayName: "RegisterForm",
                         React.createElement("input", {type: "text", 
                         name: "E-Mail", 
                         className: "form-control", 
-                        onChange: this.props.OnChange, 
-                        value: this.props.Username, 
+                        onChange: this.emailChangeHandler, 
+                        //value = {this.props.Username}
                         placeholder: "E-Mail"}
                         ), 
 
                         React.createElement("br", null), 
 
                         React.createElement(Link, {to: "Login"}, 
-                        React.createElement("input", {type: "button", value: "Register", className: "btn btn-default", width: "250", style: style1})
+                        React.createElement("button", {name: "submit", className: "btn btn-default", style: style1, onClick: this.formSubmitHandler}, "Register")
                         ), 
 
                         React.createElement("br", null), 
@@ -32183,12 +32183,24 @@ var Link = Router.Link;
 
 var Header = React.createClass({displayName: "Header",
 	render: function() {
+
+    var style = {
+      background: 'rgba(192,192,192,0.3)',
+      border: 'ridge',
+      borderColor: 'rgba(204,204,204,0.1)'
+    };
+
+    var style1 = {
+      color: "#ffffff"
+    };
+
 		return (
-        React.createElement("nav", {className: "navbar navbar-default"}, 
+
+        React.createElement("nav", {className: "navbar navbar-default", style: style}, 
           React.createElement("div", {className: "container-fluid"}, 
               React.createElement("ul", {className: "nav navbar-nav"}, 
-                React.createElement("li", null, React.createElement(Link, {to: "app"}, "Home")), 
-                React.createElement("li", null, React.createElement(Link, {to: "about"}, "About"))
+                React.createElement("li", null, React.createElement(Link, {to: "app", style: style1}, "Home")), 
+                React.createElement("li", null, React.createElement(Link, {to: "about", style: style1}, "About"))
               )
           )
         )
@@ -32263,7 +32275,6 @@ var Login = React.createClass({displayName: "Login",
         return this.setState({ user: this.state.user});
     },
 
-    
 	render: function() {
 		//noinspection JSDuplicatedDeclaration
         var styles = {
@@ -32323,17 +32334,36 @@ var RegisterForm = require('./RegisterForm');
 
 var Register = React.createClass({displayName: "Register",
     getInitialState: function() {
-       return {
-           user: { Username: '', Password: '', Email: ''}
-       };
-   },
+          return {
+              username: null
+            , password: null
+            , email: null
+          }
+        }
+        , userChangeHandler: function(event) {
+            this.setState({username: event.target.value});
+        }
 
-   setUserState: function(event) {
-        var field = event.target.name;
-        var value = event.target.value;
-        this.state.user [field] = value;
-        return this.setState({ user: this.state.user});
-    },
+        , passwordChangeHandler: function(event) {
+            this.setState({password: event.target.value});
+        }
+
+        , emailChangeHandler: function(event) {
+            this.setState({username: event.target.value});
+        }
+
+        , formSubmitHandler: function(event) {
+            event.preventDefault();
+            console.log(this.state);
+            $.ajax({
+              url: 'localhost:8000/api/v1/users/'
+              , type: 'POST'
+              , data: this.state
+            }).then(function(data) {
+              sessionStorage.setItem('authToken', data.token);
+              //redirect to homepage
+            })
+        },
 
 	render: function() {
 		//noinspection JSDuplicatedDeclaration

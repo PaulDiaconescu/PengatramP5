@@ -31,33 +31,36 @@ var RegisterForm = React.createClass({
                         <label htmlFor="Username">Username:</label>
                         <input type="text" name="Username"
                         className="form-control"
-                        onChange={this.props.OnChange}
-                        value = {this.props.Username}
+                        //onChange={this.userChangeHandler}
+                        //value = {this.props.Username}
                         placeholder="Username"
+                        onChange={this.userChangeHandler}
                         />
 
                         <label htmlFor="Password">Password:</label>
                         <input type="password"
                         name="Password"
                         className="form-control"
-                        onChange={this.props.OnChange}
-                        value = {this.props.Username}
+                        //onChange={this.passwordChangeHandler}
+                        //value = {this.props.Username}
                         placeholder="Password"
+                        onChange={this.passwordChangeHandler}
                         />
                         
-                        <label htmlFor="E-Mail">E-Mail:</label>
+                        <label htmlFor="email">E-Mail:</label>
                         <input type="text"
-                        name="E-Mail"
+                        name="email"
                         className="form-control"
-                        onChange={this.props.OnChange}
-                        value = {this.props.Username}
+                        //onChange={this.emailChangeHandler}
+                        //value = {this.props.Username}
                         placeholder="E-Mail"
+                        onChange={this.emailChangeHandler}
                         />
 
                         <br />
 
                         <Link to = "Login">
-                        <input type="button" value = "Register" className="btn btn-default" width="250" style={style1}/>
+                        <button name="submit" className="btn btn-default" style={style1} onClick={this.formSubmitHandler}>Register</button>
                         </Link>
 
                         <br />
