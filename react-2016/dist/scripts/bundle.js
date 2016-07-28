@@ -31988,6 +31988,32 @@ var Input = require('./common/textInput');
 
 
 var LoginForm = React.createClass({displayName: "LoginForm",
+
+        getInitialState: function () {
+        return {
+            username: null,
+            password: null
+        };
+    }
+    , userChangeHandler: function (event) {
+        this.setState({username: event.target.value});
+    },
+    passwordChangeHandler: function (event) {
+        this.setState({password: event.target.value});
+    },
+    formSubmitHandler: function (event) {
+        event.preventDefault();
+        console.log(this.state);
+        $.ajax({
+            url: 'http://127.0.0.1:8000/api/v1/login/'
+            , type: 'POST'
+            , data: this.state
+        }).then(function (data) {
+            sessionStorage.setItem('authToken', data.token);
+            //redirect to homepage
+        });
+    },
+
 	render: function() {
 
         var stylee = {
@@ -31997,7 +32023,7 @@ var LoginForm = React.createClass({displayName: "LoginForm",
         };
 
         var style1 = {
-                width: "280"
+                width: "285"
         };
         
         document.body.style.backgroundImage = "url('City.jpg')";
@@ -32013,9 +32039,8 @@ var LoginForm = React.createClass({displayName: "LoginForm",
                         React.createElement("label", {htmlFor: "Username"}, "Username:"), 
                         React.createElement("input", {type: "text", name: "Username", 
                         className: "form-control", 
-                        onChange: this.props.OnChange, 
-                        value: this.props.Username, 
-                        placeholder: "Username"}
+                        placeholder: "Username", 
+                        onChange: this.userChangeHandler}
                         ), 
                         React.createElement("br", null), 
 
@@ -32023,13 +32048,13 @@ var LoginForm = React.createClass({displayName: "LoginForm",
                         React.createElement("input", {type: "password", 
                         name: "Password", 
                         className: "form-control", 
-                        onChange: this.props.OnChange, 
-                        value: this.props.Username, 
-                        placeholder: "Password"}
+                        placeholder: "Password", 
+                        onChange: this.passwordChangeHandler}
+
                         ), 
                         React.createElement("br", null), 
                         
-                        React.createElement("input", {type: "submit", value: "Login", className: "btn btn-default", style: style1}), 
+                        React.createElement("input", {type: "submit", value: "Login", className: "btn btn-default", style: style1, onClick: this.formSubmitHandler}), 
 
 
                         React.createElement(Link, {to: "Register"}, 
@@ -32050,9 +32075,45 @@ module.exports = LoginForm;
 var React = require('react');
 var Router = require('react-router');
 var Link = Router.Link;
-var Input = require('./common/textInput');
+//var Input = require('./common/textInput');
 
 var RegisterForm = React.createClass({displayName: "RegisterForm",
+        setInitialState: function() {
+          return {
+              username: null,
+              password: null,
+              email: null
+          };
+        }
+         , userChangeHandler: function(event) {
+            this.setState({username: event.target.value});
+        }
+
+        , passwordChangeHandler: function(event) {
+            this.setState({password: event.target.value});
+        }
+         , emailChangeHandler: function(event) {
+            this.setState({email: event.target.value});
+        }
+
+         , formSubmitHandler: function(event) {
+            event.preventDefault();
+            console.log(this.state);
+
+            $.ajax({
+              url: 'http://localhost:8000/api/v1/users/'
+              , type: 'POST'
+              , data: this.state
+              , error: function (response){
+                    console.log(response.responseJSON.username[0]);
+                }
+            }).then(function(data) {
+              //sessionStorage.setItem('authToken', data.token);
+              //redirect to homepage
+            });
+        
+        },
+
 	render: function() {
 
         document.body.style.backgroundImage = "url('City.jpg')";
@@ -32065,7 +32126,7 @@ var RegisterForm = React.createClass({displayName: "RegisterForm",
         };
 
         var style1 = {
-                width: "280"
+                width: "285"
         };
 
         return (
@@ -32078,34 +32139,29 @@ var RegisterForm = React.createClass({displayName: "RegisterForm",
                         React.createElement("label", {htmlFor: "Username"}, "Username:"), 
                         React.createElement("input", {type: "text", name: "Username", 
                         className: "form-control", 
-                        onChange: this.userChangeHandler, 
-                        //value = {this.props.Username}
-                        placeholder: "Username"}
+                        placeholder: "Username", 
+                        onChange: this.userChangeHandler}
                         ), 
 
                         React.createElement("label", {htmlFor: "Password"}, "Password:"), 
                         React.createElement("input", {type: "password", 
                         name: "Password", 
                         className: "form-control", 
-                        onChange: this.passwordChangeHandler, 
-                        //value = {this.props.Username}
-                        placeholder: "Password"}
+                        placeholder: "Password", 
+                        onChange: this.passwordChangeHandler}
                         ), 
                         
-                        React.createElement("label", {htmlFor: "E-Mail"}, "E-Mail:"), 
+                        React.createElement("label", {htmlFor: "E-mail"}, "E-Mail:"), 
                         React.createElement("input", {type: "text", 
-                        name: "E-Mail", 
+                        name: "E-mail", 
                         className: "form-control", 
-                        onChange: this.emailChangeHandler, 
-                        //value = {this.props.Username}
-                        placeholder: "E-Mail"}
+                        placeholder: "E-Mail", 
+                        onChange: this.emailChangeHandler}
                         ), 
 
                         React.createElement("br", null), 
 
-                        React.createElement(Link, {to: "Login"}, 
-                        React.createElement("button", {name: "submit", className: "btn btn-default", style: style1, onClick: this.formSubmitHandler}, "Register")
-                        ), 
+                        React.createElement("button", {name: "submit", className: "btn btn-default", style: style1, onClick: this.formSubmitHandler}, "Register"), 
 
                         React.createElement("br", null), 
 
@@ -32122,7 +32178,7 @@ var RegisterForm = React.createClass({displayName: "RegisterForm",
 
 module.exports = RegisterForm;
 
-},{"./common/textInput":202,"react":196,"react-router":27}],199:[function(require,module,exports){
+},{"react":196,"react-router":27}],199:[function(require,module,exports){
 "use strict";
 
 var React = require('react');
@@ -32261,21 +32317,9 @@ var RegisterForm = require('./RegisterForm');
 
 
 var Login = React.createClass({displayName: "Login",
-
-    getInitialState: function() {
-       return {
-           user: { Username: '', Password: '', Email: ''}
-       };
-   },
-
-    setUserState: function (event){
-        var field = event.target.name;
-        var value = event.target.value;
-        this.state.user [field] = value;
-        return this.setState({ user: this.state.user});
-    },
-
-	render: function() {
+    
+    
+    render: function() {
 		//noinspection JSDuplicatedDeclaration
         var styles = {
         backgroundImage: "none",
@@ -32333,39 +32377,8 @@ var RegisterForm = require('./RegisterForm');
 
 
 var Register = React.createClass({displayName: "Register",
-    getInitialState: function() {
-          return {
-              username: null
-            , password: null
-            , email: null
-          }
-        }
-        , userChangeHandler: function(event) {
-            this.setState({username: event.target.value});
-        }
-
-        , passwordChangeHandler: function(event) {
-            this.setState({password: event.target.value});
-        }
-
-        , emailChangeHandler: function(event) {
-            this.setState({username: event.target.value});
-        }
-
-        , formSubmitHandler: function(event) {
-            event.preventDefault();
-            console.log(this.state);
-            $.ajax({
-              url: 'localhost:8000/api/v1/users/'
-              , type: 'POST'
-              , data: this.state
-            }).then(function(data) {
-              sessionStorage.setItem('authToken', data.token);
-              //redirect to homepage
-            })
-        },
-
-	render: function() {
+    
+        render: function() {
 		//noinspection JSDuplicatedDeclaration
         var styles = {
             backgroundImage: "none",
@@ -32374,8 +32387,6 @@ var Register = React.createClass({displayName: "Register",
             height: "330px",
             color: "#ffffff"
         };
-
-
 
 		return (
 

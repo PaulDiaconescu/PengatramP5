@@ -9,6 +9,32 @@ var Input = require('./common/textInput');
 
 
 var LoginForm = React.createClass({
+
+        getInitialState: function () {
+        return {
+            username: null,
+            password: null
+        };
+    }
+    , userChangeHandler: function (event) {
+        this.setState({username: event.target.value});
+    },
+    passwordChangeHandler: function (event) {
+        this.setState({password: event.target.value});
+    },
+    formSubmitHandler: function (event) {
+        event.preventDefault();
+        console.log(this.state);
+        $.ajax({
+            url: 'http://127.0.0.1:8000/api/v1/login/'
+            , type: 'POST'
+            , data: this.state
+        }).then(function (data) {
+            sessionStorage.setItem('authToken', data.token);
+            //redirect to homepage
+        });
+    },
+
 	render: function() {
 
         var stylee = {
@@ -18,7 +44,7 @@ var LoginForm = React.createClass({
         };
 
         var style1 = {
-                width: "280"
+                width: "285"
         };
         
         document.body.style.backgroundImage = "url('City.jpg')";
@@ -34,8 +60,6 @@ var LoginForm = React.createClass({
                         <label htmlFor="Username">Username:</label>
                         <input type="text" name="Username"
                         className="form-control"
-                        //onChange={this.props.OnChange}
-                        //value = {this.props.Username}
                         placeholder="Username"
                         onChange={this.userChangeHandler}
                         />
@@ -45,8 +69,6 @@ var LoginForm = React.createClass({
                         <input type="password"
                         name="Password"
                         className="form-control"
-                        //onChange={this.props.OnChange}
-                        //value = {this.props.Username}
                         placeholder="Password"
                         onChange={this.passwordChangeHandler}
 

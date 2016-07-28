@@ -3,9 +3,45 @@
 var React = require('react');
 var Router = require('react-router');
 var Link = Router.Link;
-var Input = require('./common/textInput');
+//var Input = require('./common/textInput');
 
 var RegisterForm = React.createClass({
+        setInitialState: function() {
+          return {
+              username: null,
+              password: null,
+              email: null
+          };
+        }
+         , userChangeHandler: function(event) {
+            this.setState({username: event.target.value});
+        }
+
+        , passwordChangeHandler: function(event) {
+            this.setState({password: event.target.value});
+        }
+         , emailChangeHandler: function(event) {
+            this.setState({email: event.target.value});
+        }
+
+         , formSubmitHandler: function(event) {
+            event.preventDefault();
+            console.log(this.state);
+
+            $.ajax({
+              url: 'http://localhost:8000/api/v1/users/'
+              , type: 'POST'
+              , data: this.state
+              , error: function (response){
+                    console.log(response.responseJSON.username[0]);
+                }
+            }).then(function(data) {
+              //sessionStorage.setItem('authToken', data.token);
+              //redirect to homepage
+            });
+        
+        },
+
 	render: function() {
 
         document.body.style.backgroundImage = "url('City.jpg')";
@@ -18,7 +54,7 @@ var RegisterForm = React.createClass({
         };
 
         var style1 = {
-                width: "280"
+                width: "285"
         };
 
         return (
@@ -31,8 +67,6 @@ var RegisterForm = React.createClass({
                         <label htmlFor="Username">Username:</label>
                         <input type="text" name="Username"
                         className="form-control"
-                        //onChange={this.userChangeHandler}
-                        //value = {this.props.Username}
                         placeholder="Username"
                         onChange={this.userChangeHandler}
                         />
@@ -41,27 +75,21 @@ var RegisterForm = React.createClass({
                         <input type="password"
                         name="Password"
                         className="form-control"
-                        //onChange={this.passwordChangeHandler}
-                        //value = {this.props.Username}
                         placeholder="Password"
                         onChange={this.passwordChangeHandler}
                         />
                         
-                        <label htmlFor="email">E-Mail:</label>
+                        <label htmlFor="E-mail">E-Mail:</label>
                         <input type="text"
-                        name="email"
+                        name="E-mail"
                         className="form-control"
-                        //onChange={this.emailChangeHandler}
-                        //value = {this.props.Username}
                         placeholder="E-Mail"
                         onChange={this.emailChangeHandler}
                         />
 
                         <br />
 
-                        <Link to = "Login">
                         <button name="submit" className="btn btn-default" style={style1} onClick={this.formSubmitHandler}>Register</button>
-                        </Link>
 
                         <br />
 
