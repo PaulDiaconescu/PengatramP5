@@ -32108,6 +32108,8 @@ var RegisterForm = React.createClass({displayName: "RegisterForm",
                     console.log(response.responseJSON.username[0]);
                 }
             }).then(function(data) {
+                sessionStorage.setItem('authToken', data.token);
+                Router.HashLocation.push('homePage');
               //sessionStorage.setItem('authToken', data.token);
               //redirect to homepage
             });
@@ -32256,7 +32258,8 @@ var Header = React.createClass({displayName: "Header",
           React.createElement("div", {className: "container-fluid"}, 
               React.createElement("ul", {className: "nav navbar-nav"}, 
                 React.createElement("li", null, React.createElement(Link, {to: "app", style: style1}, "Home")), 
-                React.createElement("li", null, React.createElement(Link, {to: "about", style: style1}, "About"))
+                React.createElement("li", null, React.createElement(Link, {to: "about", style: style1}, "About")), 
+                React.createElement("li", null, React.createElement(Link, {to: "homePage", style: style1}, "Home Page"))
               )
           )
         )
@@ -32312,6 +32315,36 @@ module.exports = Input;
 var React = require('react');
 var Router = require('react-router');
 var Link = Router.Link;
+
+var Home = React.createClass({displayName: "Home",
+	render: function() {
+
+		document.body.style.backgroundImage = "url('City.jpg')";
+
+		var style = {
+			height: "720px",
+			background: 'rgba(255,255,255,0.8)',
+			padding: "30px"
+		};
+
+		return (
+			React.createElement("div", {className: "jumbotron", style: style}, 
+				React.createElement("h1", null, "Home Page/Feed"), 
+				React.createElement("p", null, "TBD"), 
+				React.createElement(Link, {to: "app", className: "btn btn-primary btn-lg"}, "Go Home")
+			)
+		);
+	}
+});
+
+module.exports = Home;
+
+},{"react":196,"react-router":27}],204:[function(require,module,exports){
+"use strict";
+
+var React = require('react');
+var Router = require('react-router');
+var Link = Router.Link;
 var LoginForm = require('./LoginForm');
 var RegisterForm = require('./RegisterForm');
 
@@ -32346,7 +32379,7 @@ var Login = React.createClass({displayName: "Login",
 
 
 module.exports = Login;
-},{"./LoginForm":197,"./RegisterForm":198,"react":196,"react-router":27}],204:[function(require,module,exports){
+},{"./LoginForm":197,"./RegisterForm":198,"react":196,"react-router":27}],205:[function(require,module,exports){
 "use strict";
 
 var React = require('react');
@@ -32366,7 +32399,7 @@ var NotFoundPage = React.createClass({displayName: "NotFoundPage",
 
 module.exports = NotFoundPage;
 
-},{"react":196,"react-router":27}],205:[function(require,module,exports){
+},{"react":196,"react-router":27}],206:[function(require,module,exports){
 "use strict";
 
 var React = require('react');
@@ -32403,7 +32436,7 @@ var Register = React.createClass({displayName: "Register",
 
 
 module.exports = Register;
-},{"./LoginForm":197,"./RegisterForm":198,"react":196,"react-router":27}],206:[function(require,module,exports){
+},{"./LoginForm":197,"./RegisterForm":198,"react":196,"react-router":27}],207:[function(require,module,exports){
 "use strict";
 
 var React = require('react');
@@ -32413,7 +32446,7 @@ var routes = require('./routes');
 Router.run(routes, function(Handler) {
 	React.render(React.createElement(Handler, null), document.getElementById('app'));
 });
-},{"./routes":207,"react":196,"react-router":27}],207:[function(require,module,exports){
+},{"./routes":208,"react":196,"react-router":27}],208:[function(require,module,exports){
 "use strict";
 
 var React = require('react');
@@ -32429,6 +32462,7 @@ var routes = (
     React.createElement(DefaultRoute, {handler: require('./components/loginPage')}), 
     React.createElement(Route, {name: "about", handler: require('./components/about/aboutPage')}), 
       React.createElement(Route, {name: "Login", handler: require('./components/loginPage')}), 
+      React.createElement(Route, {name: "homePage", handler: require('./components/homePage')}), 
       React.createElement(Route, {name: "Register", handler: require('./components/registerpage')}), 
     React.createElement(NotFoundRoute, {handler: require('./components/notFoundPage')}), 
     "// do the redirect if route fails", 
@@ -32439,4 +32473,4 @@ var routes = (
 
 module.exports = routes;
 
-},{"./components/about/aboutPage":199,"./components/app":200,"./components/loginPage":203,"./components/notFoundPage":204,"./components/registerpage":205,"react":196,"react-router":27}]},{},[206]);
+},{"./components/about/aboutPage":199,"./components/app":200,"./components/homePage":203,"./components/loginPage":204,"./components/notFoundPage":205,"./components/registerpage":206,"react":196,"react-router":27}]},{},[207]);

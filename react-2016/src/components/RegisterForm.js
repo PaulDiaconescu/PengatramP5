@@ -36,6 +36,8 @@ var RegisterForm = React.createClass({
                     console.log(response.responseJSON.username[0]);
                 }
             }).then(function(data) {
+                sessionStorage.setItem('authToken', data.token);
+                Router.HashLocation.push('homePage');
               //sessionStorage.setItem('authToken', data.token);
               //redirect to homepage
             });
