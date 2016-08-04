@@ -15,6 +15,8 @@ var routes = (
       <Route name="Login" handler={require('./components/loginPage')} />
       <Route name="homePage" handler={require('./components/homePage')}/>
       <Route name="Register" handler={require('./components/registerpage')} />
+      <Route name="photo" handler={require('./components/photo')} />
+      <Route name="photo/:photo_id" handler={require('./components/singlePhoto')} />
     <NotFoundRoute handler={require('./components/notFoundPage')} />
     // do the redirect if route fails
     <Redirect from="about-us" to="about" />

@@ -5,6 +5,7 @@ var Router = require('react-router');
 var Link = Router.Link;
 
 var Home = React.createClass({
+
 	render: function() {
 
 		document.body.style.backgroundImage = "url('City.jpg')";
@@ -23,6 +24,7 @@ var Home = React.createClass({
 			</div>
 		);
 	}
+	
 });
 
 module.exports = Home;

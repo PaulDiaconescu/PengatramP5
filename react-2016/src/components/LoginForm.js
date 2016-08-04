@@ -29,8 +29,19 @@ var LoginForm = React.createClass({
             url: 'http://127.0.0.1:8000/api/v1/login/'
             , type: 'POST'
             , data: this.state
+            // , error: function(response) {
+			// 	console.log(response.responseText.JSON);
+			// }
+			, error: function(xhr, textStatus, errorThrown) {
+					var json = JSON.parse(xhr.responseText);
+					for (var prop in json) {
+						alert(prop + "  " + json[prop]);
+					}
+			}
         }).then(function (data) {
             sessionStorage.setItem('authToken', data.token);
+			sessionStorage.setItem('user_id', data.id);
+            Router.HashLocation.push("photo");
             //redirect to homepage
         });
     },
@@ -75,7 +86,7 @@ var LoginForm = React.createClass({
                         />
                         <br />
                         
-                        <input type="submit" value="Login" className="btn btn-default" style={style1} onClick={this.formSubmitHandler}/>
+                        <button className="btn btn-default " value="Login" style={style1} name="submit" onClick={this.formSubmitHandler}>Login</button>
 
 
                         <Link to = "Register">

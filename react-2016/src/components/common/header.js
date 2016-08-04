@@ -25,11 +25,14 @@ var Header = React.createClass({
                 <li><Link to="app" style={style1}>Home</Link></li>
                 <li><Link to="about" style={style1}>About</Link></li>
                 <li><Link to="homePage" style={style1}>Home Page</Link></li>
+                <li><Link to="photo" style={style1}>Photo</Link></li>
               </ul>
           </div>
+          <span className="navbar-right">PENTAGRAM</span>
         </nav>
 		);
 	}
 });
 
 module.exports = Header;
+

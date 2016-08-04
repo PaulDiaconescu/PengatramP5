@@ -32008,8 +32008,19 @@ var LoginForm = React.createClass({displayName: "LoginForm",
             url: 'http://127.0.0.1:8000/api/v1/login/'
             , type: 'POST'
             , data: this.state
+            // , error: function(response) {
+			// 	console.log(response.responseText.JSON);
+			// }
+			, error: function(xhr, textStatus, errorThrown) {
+					var json = JSON.parse(xhr.responseText);
+					for (var prop in json) {
+						alert(prop + "  " + json[prop]);
+					}
+			}
         }).then(function (data) {
             sessionStorage.setItem('authToken', data.token);
+			sessionStorage.setItem('user_id', data.id);
+            Router.HashLocation.push("photo");
             //redirect to homepage
         });
     },
@@ -32054,7 +32065,7 @@ var LoginForm = React.createClass({displayName: "LoginForm",
                         ), 
                         React.createElement("br", null), 
                         
-                        React.createElement("input", {type: "submit", value: "Login", className: "btn btn-default", style: style1, onClick: this.formSubmitHandler}), 
+                        React.createElement("button", {className: "btn btn-default ", value: "Login", style: style1, name: "submit", onClick: this.formSubmitHandler}, "Login"), 
 
 
                         React.createElement(Link, {to: "Register"}, 
@@ -32109,7 +32120,7 @@ var RegisterForm = React.createClass({displayName: "RegisterForm",
                 }
             }).then(function(data) {
                 sessionStorage.setItem('authToken', data.token);
-                Router.HashLocation.push('homePage');
+                Router.HashLocation.push('loginForm');
               //sessionStorage.setItem('authToken', data.token);
               //redirect to homepage
             });
@@ -32259,9 +32270,11 @@ var Header = React.createClass({displayName: "Header",
               React.createElement("ul", {className: "nav navbar-nav"}, 
                 React.createElement("li", null, React.createElement(Link, {to: "app", style: style1}, "Home")), 
                 React.createElement("li", null, React.createElement(Link, {to: "about", style: style1}, "About")), 
-                React.createElement("li", null, React.createElement(Link, {to: "homePage", style: style1}, "Home Page"))
+                React.createElement("li", null, React.createElement(Link, {to: "homePage", style: style1}, "Home Page")), 
+                React.createElement("li", null, React.createElement(Link, {to: "photo", style: style1}, "Photo"))
               )
-          )
+          ), 
+          React.createElement("span", {className: "navbar-right"}, "PENTAGRAM")
         )
 		);
 	}
@@ -32317,6 +32330,7 @@ var Router = require('react-router');
 var Link = Router.Link;
 
 var Home = React.createClass({displayName: "Home",
+
 	render: function() {
 
 		document.body.style.backgroundImage = "url('City.jpg')";
@@ -32335,6 +32349,7 @@ var Home = React.createClass({displayName: "Home",
 			)
 		);
 	}
+	
 });
 
 module.exports = Home;
@@ -32405,6 +32420,77 @@ module.exports = NotFoundPage;
 var React = require('react');
 var Router = require('react-router');
 var Link = Router.Link;
+
+var Photo = React.createClass({displayName: "Photo",
+	getInitialState: function(){
+			return {
+				images: [{
+					"id": 1,
+					"user": 1,
+					"photo": "/media/photos/user_testing/aad8d892-574a-11e6-814a-001bfc840b1f_ifM5SVM.jpg"
+				}]
+		
+			};
+	},
+
+	componentWillMount: function() {
+		var self = this;
+		$.ajax({
+			url: 'http://127.0.0.1:8000/api/v1/photos/'
+			, type: 'GET'
+			, error: function(xhr, textStatus, errorThrown) {
+
+			}
+		}).then(function(data) {
+            self.setState({images: data});
+		});
+	}
+
+	, onCommentHandler: function(event) {
+		var photoId = event.target.dataset.id;
+		Router.HashLocation.push('photo/' + photoId);
+	}
+	, render: function() {
+
+        var style = {
+			height: "800px",
+			background: 'rgba(255,255,255,0.8)',
+			padding: "30px"
+		};
+
+        document.body.style.backgroundImage = "url('City.jpg')";
+        document.body.style.backgroundPosition = "top center";
+
+		var self = this;
+		return (
+			React.createElement("div", {className: "jumbotron", style: style}, 
+				React.createElement("div", {className: "row"}, 
+					self.state.images.map(function (item) {
+						return (
+						React.createElement("div", {className: "col-md-4 image-frame", key: item.id}, 
+							React.createElement("a", {href: '#/photo/' + item.id}, 
+								React.createElement("img", {src: 'http://127.0.0.1:8000' + item.photo, id: 'image-' + item.id, "data-id": item.id, width: "70%", height: "70%"})
+							)
+						)
+						);
+					})
+					), 
+                    React.createElement("br", null), 
+				React.createElement("button", {type: "button", className: "btn btn-primary btn-lg round-btn"}, "+")
+			)
+            );
+	}
+
+});
+
+module.exports = Photo;
+
+},{"react":196,"react-router":27}],207:[function(require,module,exports){
+"use strict";
+
+var React = require('react');
+var Router = require('react-router');
+var Link = Router.Link;
 var LoginForm = require('./LoginForm');
 var RegisterForm = require('./RegisterForm');
 
@@ -32436,7 +32522,103 @@ var Register = React.createClass({displayName: "Register",
 
 
 module.exports = Register;
-},{"./LoginForm":197,"./RegisterForm":198,"react":196,"react-router":27}],207:[function(require,module,exports){
+},{"./LoginForm":197,"./RegisterForm":198,"react":196,"react-router":27}],208:[function(require,module,exports){
+"use strict";
+
+var React = require('react');
+var Router = require('react-router');
+var Link = Router.Link;
+
+var Photo = React.createClass({displayName: "Photo",
+	getInitialState: function(){
+			return {
+				imageLoaded: false,
+				image: '',
+				comments: [],
+				likes: ''
+			};
+	}
+
+	, componentWillMount: function() {
+		var self = this;
+		$.ajax({
+			url: 'http://127.0.0.1:8000/api/v1/photos/'
+			, type: 'GET'
+			, error: function(xhr, textStatus, errorThrown) {
+
+			}
+		}).then(function(data) {
+			function findPhoto(img) {
+				return img.id === parseInt(self.props.params.photo_id);
+			}
+            self.setState({imageLoaded: true});
+			self.setState({image: data.find(findPhoto)});
+
+			$.ajax({
+			url: 'http://127.0.0.1:8000/api/photos/' + self.state.image.id + '/comments/'
+			, type: 'GET'
+			, error: function(xhr, textStatus, errorThrown) {
+			}
+			}).then(function(commentData) {
+				self.setState({comments: commentData});
+			});
+
+			$.ajax({
+			url: 'http://127.0.0.1:8000/api/photos/' + self.state.image.id + '/likes/'
+			, type: 'GET'
+			, error: function(xhr, textStatus, errorThrown) {
+			}
+			}).then(function(likesData) {
+				self.setState({likes: likesData});
+			});
+		});
+	}
+
+	, onCommentHandler: function(event) {
+		event.persist();
+
+		var id = event.target.id;
+
+	}
+	, render: function() {
+
+        document.body.style.backgroundImage = "url('City.jpg')";
+        document.body.style.backgroundPosition = "top center";
+
+		var self = this;
+		//debugger;
+		return (
+			React.createElement("div", {className: "container"}, 
+				React.createElement("div", {className: "row"}, 
+					React.createElement("div", {className: "col-md-5"}, 
+						React.createElement("img", {className: "img-rounded photo-img", src: 'http://127.0.0.1:8000' + self.state.image.photo, width: "70%"}), 
+						React.createElement("span", {className: "like-icon glyphicon glyphicon-thumbs-up", onClick: self.onLikeHandler}), React.createElement("span", {className: "like-label"}, self.state.likes)
+					), 
+					React.createElement("div", {className: "col-md-7 well"}, 
+						React.createElement("h1", null, "Comments"), 
+						self.state.comments.map(function (item) {
+							return (
+							React.createElement("div", null, 
+								React.createElement("h5", null, React.createElement("b", null, item.user, " said: "), React.createElement("i", null, item.comment))
+							)
+							);
+						}), 
+						self.state.comments.length === 0 ? React.createElement("div", null, "No comments") : '', 
+
+						sessionStorage.getItem('authToken') != null ? React.createElement("textarea", {placeholder: "add comment", className: "form-control", id: "commentContent"}) : '', 
+						sessionStorage.getItem('authToken') != null ? React.createElement("button", {className: "btn btn-default col-sm-offset-3 col-sm-9", name: "submit", onClick: self.onCommentHandler}, "Add") : ''
+					)
+						
+					)
+
+			)
+			);
+	}
+});
+
+module.exports = Photo;
+
+},{"react":196,"react-router":27}],209:[function(require,module,exports){
 "use strict";
 
 var React = require('react');
@@ -32446,7 +32628,7 @@ var routes = require('./routes');
 Router.run(routes, function(Handler) {
 	React.render(React.createElement(Handler, null), document.getElementById('app'));
 });
-},{"./routes":208,"react":196,"react-router":27}],208:[function(require,module,exports){
+},{"./routes":210,"react":196,"react-router":27}],210:[function(require,module,exports){
 "use strict";
 
 var React = require('react');
@@ -32464,6 +32646,8 @@ var routes = (
       React.createElement(Route, {name: "Login", handler: require('./components/loginPage')}), 
       React.createElement(Route, {name: "homePage", handler: require('./components/homePage')}), 
       React.createElement(Route, {name: "Register", handler: require('./components/registerpage')}), 
+      React.createElement(Route, {name: "photo", handler: require('./components/photo')}), 
+      React.createElement(Route, {name: "photo/:photo_id", handler: require('./components/singlePhoto')}), 
     React.createElement(NotFoundRoute, {handler: require('./components/notFoundPage')}), 
     "// do the redirect if route fails", 
     React.createElement(Redirect, {from: "about-us", to: "about"}), 
@@ -32473,4 +32657,4 @@ var routes = (
 
 module.exports = routes;
 
-},{"./components/about/aboutPage":199,"./components/app":200,"./components/homePage":203,"./components/loginPage":204,"./components/notFoundPage":205,"./components/registerpage":206,"react":196,"react-router":27}]},{},[207]);
+},{"./components/about/aboutPage":199,"./components/app":200,"./components/homePage":203,"./components/loginPage":204,"./components/notFoundPage":205,"./components/photo":206,"./components/registerpage":207,"./components/singlePhoto":208,"react":196,"react-router":27}]},{},[209]);
